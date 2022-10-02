@@ -1,4 +1,5 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   Table,
   Thead,
@@ -10,73 +11,104 @@ import {
   TableCaption,
   TableContainer,
   Button,
+  Select,
+  HStack,
+  Options,
   ButtonGroup,
   Box,
   Text,
 } from "@chakra-ui/react";
+import ModalForm from "../Modal/ModalForm";
+import axios from "../../instance";
+import cors from "cors";
 
 const TasksList = () => {
+  const params = useParams();
+  const projectCompany = params.projectId;
+  const [tasks, setTasks] = useState([]);
+
+  let userId = localStorage.getItem("userId");
+  useEffect(() => {
+    let getData = async () => {
+      const res = await axios.post(
+        "/project/getTask",
+        { userId: userId, company: projectCompany },
+        cors()
+      );
+      setTasks(res.data.data);
+    };
+    getData();
+  }, []);
+
+  console.log(tasks);
+
+  let handleChange = (e) => {
+    console.log(e.target.value);
+    // setTasks(e.target.value);
+  };
+
+  let Tasks = (props) => {
+    return (
+      <Tr>
+        <Td>{props.task}</Td>
+        <Td>
+          <Select onChange={handleChange} name="status">
+            <option value="Backlog">Backlog</option>
+            <option value="Doing">Doing</option>
+            <option value="Blocked">Blocked</option>
+            <option value="Done">Done</option>
+          </Select>
+        </Td>
+
+        <Td>
+          <Button colorScheme="red">Delete</Button>
+        </Td>
+      </Tr>
+    );
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   let userId = localStorage.getItem("userId");
+  //   let data = {
+  //     company: projectCompany,
+  //     userId,
+  //   };
+
+  //   // console.log(data);
+  //   axios
+  //     .post("/project/task/", data, cors())
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       // res.data.status === 200
+  //       //   ? window.location.assign("/projects")
+  //       //   : console.log("err");
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
   return (
     <Box>
-      <Text as={"h2"} fontSize="2xl">
-        Tasks List
-      </Text>
+      <Box display={"flex"} justifyContent="space-between">
+        <Text as={"h2"} fontSize="2xl">
+          View Project - {projectCompany} - Tasks
+        </Text>
+        <ModalForm title="Create New Task" />
+      </Box>
       <TableContainer>
         <Table size="sm">
           <Thead>
             <Tr>
-              <Th>First Name</Th>
-              <Th>Last Name</Th>
-              <Th>Email Address</Th>
-              <Th>Phone</Th>
-              <Th>Country</Th>
+              <Th>Task Name</Th>
+              <Th>Change Status</Th>
               <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td>25.4</Td>
-              <Td>25.4</Td>
-              <Td>25.4</Td>
-              <Td>
-                <Button colorScheme="blue">Add User</Button>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td>30.48</Td>
-              <Td>30.48</Td>
-              <Td>30.48</Td>
-              <Td>
-                <Button colorScheme="blue">Add User</Button>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td>0.91444</Td>
-              <Td>0.91444</Td>
-              <Td>0.91444</Td>
-              <Td>
-                <Button colorScheme="blue">Add User</Button>
-              </Td>
-            </Tr>
+            {tasks.map((i) => {
+              return <Tasks task={i.task} status={i.status} />;
+            })}
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th>multiply by</Th>
-              <Th>multiply by</Th>
-              <Th>multiply by</Th>
-              <Th>
-                <Button colorScheme="blue">Add User</Button>
-              </Th>
-            </Tr>
-          </Tfoot>
         </Table>
       </TableContainer>
     </Box>

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState, useEffect, useSearchParams } from "react";
 import { useParams } from "react-router-dom";
 import {
   Table,
@@ -17,24 +17,26 @@ import {
 } from "@chakra-ui/react";
 import axios from "../../instance";
 import cors from "cors";
+import Modal from "../Modal/Modal";
 
-const UserList = (props) => {
-  const [users, setUsers] = useState([]);
+const ProjectUserList = (props) => {
+  const params = useParams();
+  const projectCompany = params.projectId;
+  const [users, setUser] = useState([]);
 
+  let userId = localStorage.getItem("userId");
   useEffect(() => {
-    let userId = localStorage.getItem("userId");
-
     let getData = async () => {
-      const res = await axios.post(`/getUsers`, { userId: userId }, cors());
+      const res = await axios.post(
+        "/project/getUser",
+        { userId: userId, company: projectCompany },
+        cors()
+      );
       // console.log(res);
-      setUsers(res.data.data);
+      setUser(res.data.data);
     };
-
     getData();
   }, []);
-
-  console.log(users);
-  // return;
 
   let Users = (props) => {
     return (
@@ -53,9 +55,12 @@ const UserList = (props) => {
 
   return (
     <Box>
-      <Text as={"h2"} fontSize="2xl">
-        Users List
-      </Text>
+      <Box display={"flex"} justifyContent="space-between">
+        <Text as={"h2"} fontSize="2xl">
+          View Project {projectCompany} Users
+        </Text>
+        <Modal title="Add New User" />
+      </Box>
       <TableContainer>
         <Table size="sm">
           <Thead>
@@ -85,4 +90,4 @@ const UserList = (props) => {
   );
 };
 
-export default UserList;
+export default ProjectUserList;
