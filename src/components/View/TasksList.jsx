@@ -42,8 +42,6 @@ const TasksList = () => {
     getData();
   }, []);
 
-  console.log(tasks);
-
   let handleChange = (e) => {
     console.log(e.target.value);
     // setTasks(e.target.value);
