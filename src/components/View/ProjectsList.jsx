@@ -32,7 +32,6 @@ const ProjectsList = () => {
 
     getData();
   }, []);
-  console.log(projects);
 
   let Projects = (props) => {
     return (

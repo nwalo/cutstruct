@@ -26,6 +26,7 @@ const TasksList = () => {
   const params = useParams();
   const projectCompany = params.projectId;
   const [tasks, setTasks] = useState([]);
+  const [project, setProject] = useState([]);
 
   let userId = localStorage.getItem("userId");
   useEffect(() => {
@@ -36,6 +37,7 @@ const TasksList = () => {
         cors()
       );
       setTasks(res.data.data);
+      setProject(res.data.project);
     };
     getData();
   }, []);
@@ -93,7 +95,7 @@ const TasksList = () => {
         <Text as={"h2"} fontSize="2xl">
           View Project - {projectCompany} - Tasks
         </Text>
-        <ModalForm title="Create New Task" />
+        <ModalForm title="Create New Task" project={project} />
       </Box>
       <TableContainer>
         <Table size="sm">

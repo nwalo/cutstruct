@@ -44,6 +44,7 @@ function AddUser(): JSX.Element {
       lastName: lastName,
       password: password,
       username: username,
+      adminId: localStorage.getItem("userId"),
     };
 
     axios

@@ -33,12 +33,18 @@ const UserList = (props) => {
     getData();
   }, []);
 
-  console.log(users);
-
   let handleDelete = (e) => {
     e.preventDefault();
-
-    console.log(e.target.id);
+    let adminId = localStorage.getItem("userId");
+    let data = {
+      adminId,
+      userId: e.target.id,
+    };
+    console.log(data);
+    axios
+      .post("/deleteusers", data, cors())
+      .then((res) => window.location.reload())
+      .catch((err) => console.log(err));
   };
 
   let Users = (props) => {
@@ -53,7 +59,7 @@ const UserList = (props) => {
             as={"a"}
             href={""}
             onClick={handleDelete}
-            id={props.id}
+            id={props.userId}
           >
             Delete User
           </Button>
@@ -85,7 +91,7 @@ const UserList = (props) => {
                   lname={i.lastName}
                   email={i.username}
                   key={k}
-                  userId={i.id}
+                  userId={i._id}
                 />
               );
             })}

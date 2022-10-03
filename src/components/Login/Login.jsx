@@ -26,6 +26,8 @@ export default function SplitScreen() {
 
   localStorage.clear();
 
+  console.log(localStorage.getItem("userId"));
+
   const handleChange = (e) => {
     let inputType = e.target.type;
     inputType === "email"
@@ -42,17 +44,29 @@ export default function SplitScreen() {
       password: password,
     };
 
+    // let getData = async () => {
+    //   const res = await axios.post(`/login`, data, cors());
+    //   // console.log(res);
+    //   setUsers(res.data.data);
+    // };
+
+    // getData();
+
     axios
       .post("/login", data, cors())
       .then((res) => {
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("lastName", res.data.lastName);
-        localStorage.setItem("firstName", res.data.firstName);
         localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem("firstName", res.data.firstName);
+        localStorage.setItem("role", res.data.role);
         console.log(res.data);
-        res.data.status === 200
-          ? navigate(`/dashboard`)
-          : setError(res.data.response);
+
+        setTimeout(() => {
+          res.data.status === 200
+            ? navigate(`/dashboard`)
+            : setError(res.data.response);
+        }, 1000);
       })
       .catch((err) => setError(err));
   };
@@ -80,8 +94,9 @@ export default function SplitScreen() {
               align={"start"}
               justify={"space-between"}
             >
-              <Checkbox>Remember me</Checkbox>
-              <Link color={"blue.500"}>Forgot password?</Link>
+              <Link color={"blue.500"} href="/register">
+                Register Now!
+              </Link>
             </Stack>
             <Button
               colorScheme={"blue"}

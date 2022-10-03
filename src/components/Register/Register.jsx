@@ -60,12 +60,8 @@ export default function Register() {
         localStorage.setItem("userId", res.data.data.userId);
         localStorage.setItem("lastName", res.data.data.lastName);
         localStorage.setItem("firstName", res.data.data.firstName);
+        localStorage.setItem("role", res.data.data.role);
 
-        console.log(
-          localStorage.getItem("userId", res.data.userId),
-          localStorage.getItem("lastName", res.data.lastName),
-          localStorage.getItem("firstName", res.data.firstName)
-        );
         res.data.status === 200
           ? window.location.assign("/dashboard")
           : setError(res.data.response);

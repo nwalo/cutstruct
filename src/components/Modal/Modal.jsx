@@ -26,12 +26,36 @@ function ManualClose(props) {
 
     let getData = async () => {
       const res = await axios.post(`/getUsers`, { userId: userId }, cors());
-      console.log(res);
+      // console.log(res);
       setUsers(res.data.data);
     };
 
     getData();
   }, []);
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+
+    let userId = localStorage.getItem("userId");
+    let data = {
+      user: e.target.id,
+      // company: projectCompany,
+      userId,
+      project: props.project,
+    };
+    console.log(e.target.id);
+    console.log(data);
+
+    axios
+      .post("/projects/user", data, cors())
+      .then((res) => {
+        console.log(res.data);
+        // res.data.status === 200
+        //   ? window.location.reload()
+        //   : console.log(res.data.response);
+      })
+      .catch((err) => console.log(err));
+  };
 
   let Users = (props) => {
     return (
@@ -45,7 +69,9 @@ function ManualClose(props) {
         <Text>
           <span>{props.lname}</span> <span>{props.name}</span>
         </Text>
-        <Button colorScheme={"blue"}>Add</Button>
+        <Button colorScheme={"blue"} as={"a"} id={props.id} onClick={handleAdd}>
+          Add
+        </Button>
       </ListItem>
     );
   };
@@ -77,7 +103,7 @@ function ManualClose(props) {
                     lname={i.lastName}
                     email={i.username}
                     key={k}
-                    id={i.id}
+                    id={i._id}
                   />
                 );
               })}

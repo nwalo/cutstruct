@@ -38,7 +38,10 @@ function ModalForm(props) {
       task,
       company: projectCompany,
       userId,
+      project: props.project,
     };
+
+    console.log(data);
 
     axios
       .post("/task", data, cors())

@@ -41,6 +41,12 @@ import { ViewIcon, CalendarIcon } from "@chakra-ui/icons";
 import axios from "../../instance";
 import cors from "cors";
 
+let lastName = localStorage.getItem("lastName");
+let firstName = localStorage.getItem("firstName");
+let role = localStorage.getItem("role");
+
+console.log(role, firstName);
+
 interface LinkItemProps {
   name: string;
   icon: IconType;
@@ -172,11 +178,9 @@ interface MobileProps extends FlexProps {
 const handleLogout = () => {
   axios.get("/logout").then((res) => {
     window.location.assign("/");
+    localStorage.clear();
   });
 };
-
-let lastName = localStorage.getItem("lastName");
-let firstName = localStorage.getItem("firstName");
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
@@ -239,7 +243,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                     {firstName} {lastName}
                   </Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {role ? role : "Admin"}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>

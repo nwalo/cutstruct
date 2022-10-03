@@ -23,6 +23,7 @@ const ProjectUserList = (props) => {
   const params = useParams();
   const projectCompany = params.projectId;
   const [users, setUser] = useState([]);
+  const [project, setProject] = useState([]);
 
   let userId = localStorage.getItem("userId");
   useEffect(() => {
@@ -34,6 +35,7 @@ const ProjectUserList = (props) => {
       );
       // console.log(res);
       setUser(res.data.data);
+      setProject(res.data.project);
     };
     getData();
   }, []);
@@ -59,7 +61,7 @@ const ProjectUserList = (props) => {
         <Text as={"h2"} fontSize="2xl">
           View Project {projectCompany} Users
         </Text>
-        <Modal title="Add New User" />
+        <Modal title="Add New User" project={project} />
       </Box>
       <TableContainer>
         <Table size="sm">

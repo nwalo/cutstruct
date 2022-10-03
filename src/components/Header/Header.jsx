@@ -21,8 +21,6 @@ export default function Header() {
 
   let userId = localStorage.getItem("userId");
   let lastName = localStorage.getItem("lastName");
-  const q = query.get("uid");
-  console.log(q);
 
   return (
     <>
