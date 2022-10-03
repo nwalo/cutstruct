@@ -34,7 +34,12 @@ const UserList = (props) => {
   }, []);
 
   console.log(users);
-  // return;
+
+  let handleDelete = (e) => {
+    e.preventDefault();
+
+    console.log(e.target.id);
+  };
 
   let Users = (props) => {
     return (
@@ -43,7 +48,13 @@ const UserList = (props) => {
         <Td>{props.lname}</Td>
         <Td>{props.email}</Td>
         <Td>
-          <Button colorScheme="red" id={props.id}>
+          <Button
+            colorScheme="red"
+            as={"a"}
+            href={""}
+            onClick={handleDelete}
+            id={props.id}
+          >
             Delete User
           </Button>
         </Td>
@@ -74,7 +85,7 @@ const UserList = (props) => {
                   lname={i.lastName}
                   email={i.username}
                   key={k}
-                  id={i.id}
+                  userId={i.id}
                 />
               );
             })}

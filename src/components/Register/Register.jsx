@@ -24,6 +24,8 @@ export default function Register() {
   let [password, setPassword] = useState("");
   let [error, setError] = useState("");
 
+  localStorage.clear();
+
   let handleChange = (e) => {
     console.log(e.target.value);
     let val = e.target.value;
@@ -42,19 +44,31 @@ export default function Register() {
     e.preventDefault();
 
     let data = {
-      fName: firstName,
-      lName: lastName,
+      firstName: firstName,
+      lastName: lastName,
       password: password,
       username: username,
     };
 
+    console.log(data);
+
     axios
       .post("/register", data)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+
+        localStorage.setItem("userId", res.data.data.userId);
+        localStorage.setItem("lastName", res.data.data.lastName);
+        localStorage.setItem("firstName", res.data.data.firstName);
+
+        console.log(
+          localStorage.getItem("userId", res.data.userId),
+          localStorage.getItem("lastName", res.data.lastName),
+          localStorage.getItem("firstName", res.data.firstName)
+        );
         res.data.status === 200
           ? window.location.assign("/dashboard")
-          : setError(res.data.response.message);
+          : setError(res.data.response);
       })
       .catch((err) => {
         setError(err);

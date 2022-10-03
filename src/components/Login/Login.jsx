@@ -24,6 +24,8 @@ export default function SplitScreen() {
 
   const navigate = useNavigate();
 
+  localStorage.clear();
+
   const handleChange = (e) => {
     let inputType = e.target.type;
     inputType === "email"
@@ -47,6 +49,7 @@ export default function SplitScreen() {
         localStorage.setItem("lastName", res.data.lastName);
         localStorage.setItem("firstName", res.data.firstName);
         localStorage.setItem("accessToken", res.data.accessToken);
+        console.log(res.data);
         res.data.status === 200
           ? navigate(`/dashboard`)
           : setError(res.data.response);
